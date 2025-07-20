@@ -1,12 +1,12 @@
 from django import forms
-from .models import Tasks
+from .models import Task
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate
 
 class CreateForm(forms.ModelForm):
     class Meta:
-        model=Tasks
+        model=Task
         fields='__all__'
 
 class Registerform(forms.Form):

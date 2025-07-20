@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Tasks
+from .models import Task
 from .forms import CreateForm,Registerform,LoginForm
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
@@ -13,10 +13,10 @@ from django.contrib.auth.decorators import login_required
 def TaskList(request):
     if request.user.is_authenticated:
         user_id = request.user.id
-        tasks = Tasks.objects.filter(user=request.user)
+        tasks = Task.objects.filter(user=request.user)
     else:
         user_id = None
-        tasks = Tasks.objects.filter(is_public=True)  # Filter public tasks for unauthenticated users
+        tasks = Task.objects.filter(is_public=True)  # Filter public tasks for unauthenticated users
     
     context = {
         'user_id': user_id,
@@ -40,18 +40,18 @@ def CreateList(request):
 
 @login_required
 def deletetask(request, task_id):
-    task = get_object_or_404(Tasks, pk=task_id)
+    task = get_object_or_404(Task, pk=task_id)
     task.delete()
     return redirect('task') 
 
 @login_required
 def Viewtask(request,view_id):
-    view=Tasks.objects.filter(id=view_id).first() 
+    view=Task.objects.filter(id=view_id).first() 
     context={'views':view}
     return render(request,'pages/view.html',context)
 @login_required
 def edittask(request, edit_id):
-    task = get_object_or_404(Tasks, id=edit_id, user=request.user) 
+    task = get_object_or_404(Task, id=edit_id, user=request.user) 
 
     if request.method == 'POST':
         form = CreateForm(request.POST, instance=task)  
