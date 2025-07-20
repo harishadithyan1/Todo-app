@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.TaskList , name="task"),
@@ -10,4 +12,4 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.Login, name='login'),
     path('logout/', views.logout_view, name='logout'),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
